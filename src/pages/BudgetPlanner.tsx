@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { Plus, Edit, Trash2, Check, X, FileText } from 'lucide-react';
-import { useWedding, BudgetCategory, BudgetItem } from '@/contexts/WeddingContext';
+import { useWedding } from '@/contexts/WeddingContext';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import PDFExportModal from '@/components/PDFExportModal';
+import ResetDataDialog from '@/components/ResetDataDialog';
 
 const BudgetPlanner = () => {
   const { weddingData, updateTotalBudget, addBudgetCategory, updateBudgetCategory, 
@@ -127,10 +127,45 @@ const BudgetPlanner = () => {
       <div className="space-y-6">
         <Card className="wedding-card relative">
           <CardHeader className="pb-2">
-            <CardTitle className="flex justify-between items-center">
-              <span>Budget Summary</span>
+            <CardTitle className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="flex items-center gap-2">
+                <span>Budget Summary</span>
+                {isEditingTotal ? (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="number"
+                      value={newTotalBudget}
+                      onChange={(e) => setNewTotalBudget(e.target.value)}
+                      className="w-32"
+                    />
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      onClick={handleSaveTotalBudget}
+                    >
+                      <Check className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      onClick={() => setIsEditingTotal(false)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => setIsEditingTotal(true)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
                 <PDFExportModal />
+                <ResetDataDialog />
               </div>
             </CardTitle>
           </CardHeader>
@@ -416,7 +451,7 @@ const BudgetPlanner = () => {
             </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-medium">Estimated Cost (₹)</label>
+              <label className="text-sm font-medium">Estimated Cost (���)</label>
               <Input 
                 type="number"
                 placeholder="0"
