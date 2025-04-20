@@ -142,41 +142,41 @@ const BudgetPlanner = () => {
               <div className="flex items-center gap-2">
                 <span>Budget Summary</span>
                 {isEditingTotal ? (
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      value={newTotalBudget}
-                      onChange={(e) => setNewTotalBudget(e.target.value)}
-                      className="w-32"
-                    />
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      onClick={handleSaveTotalBudget}
-                    >
-                      <Check className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      onClick={() => setIsEditingTotal(false)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ) : (
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => setIsEditingTotal(true)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <PDFExportModal />
-                <ResetDataDialog />
+                 <div className="flex items-center gap-2">
+                   <Input
+                     type="number"
+                     value={newTotalBudget}
+                     onChange={(e) => setNewTotalBudget(e.target.value)}
+                     className="w-40"
+                   />
+                   <Button 
+                     variant="ghost" 
+                     size="icon"
+                     onClick={handleSaveTotalBudget}
+                   >
+                     <Check className="h-4 w-4" />
+                   </Button>
+                   <Button 
+                     variant="ghost" 
+                     size="icon"
+                     onClick={() => {
+                       setIsEditingTotal(false);
+                       setNewTotalBudget(weddingData.totalBudget.toString());
+                     }}
+                   >
+                     <X className="h-4 w-4" />
+                   </Button>
+                 </div>
+               ) : (
+                 <Button 
+                   variant="default" 
+                   size="sm" 
+                   onClick={() => setIsEditingTotal(true)}
+                   title='Edit Total Budget'
+                 >
+                   <Edit/>
+                 </Button>
+               )}
               </div>
             </CardTitle>
           </CardHeader>

@@ -59,7 +59,7 @@ const PDFExportModal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="default" size="sm">
           <FileText className="h-4 w-4 mr-2" />
           Export as PDF
         </Button>

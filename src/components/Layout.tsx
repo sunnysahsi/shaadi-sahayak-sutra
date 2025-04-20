@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Calendar, ListChecks, Users, FileText, DollarSign, BookOpen, Menu, X } from 'lucide-react';
 import ImportExportModal from './ImportExportModal';
+import PDFExportModal from './PDFExportModal';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -46,6 +47,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
             >
               Import/Export
             </button>
+            <PDFExportModal />
+
             
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -131,6 +134,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                   <FileText className="w-5 h-5" />
                   <span>Import/Export Data</span>
                 </button>
+                <PDFExportModal />
+
               </nav>
             </div>
           </div>
