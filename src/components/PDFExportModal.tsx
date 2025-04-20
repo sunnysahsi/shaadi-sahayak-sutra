@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { FileText } from 'lucide-react';
 import { useWedding } from '@/contexts/WeddingContext';
@@ -67,6 +67,9 @@ const PDFExportModal = () => {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Export to PDF</DialogTitle>
+          <DialogDescription>
+            Choose which section of your wedding planner to export as PDF
+          </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-2 gap-4 py-4">
           <Button onClick={handleExportBudget} variant="outline" className="justify-start">

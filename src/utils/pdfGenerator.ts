@@ -3,12 +3,9 @@ import { BudgetCategory, Event, Guest, Vendor, TodoItem, Note, WeddingData } fro
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 
-// Add the missing interface for jsPDF-autotable
-declare module 'jspdf' {
-  interface jsPDF {
-    autoTable: (options: any) => jsPDF;
-  }
-}
+// Explicitly import and add the autoTable plugin
+// @ts-ignore - The type definitions may be incomplete, but the plugin works
+import autoTable from 'jspdf-autotable';
 
 // Format currency
 const formatCurrency = (amount: number) => {
@@ -69,7 +66,8 @@ export const generateBudgetPDF = (budgetData: { totalBudget: number, budgetCateg
     ['Remaining', formatCurrency(budgetData.totalBudget - totalActual)]
   ];
   
-  doc.autoTable({
+  // Use autoTable directly
+  autoTable(doc, {
     startY: 50,
     head: [['Item', 'Amount']],
     body: summaryData,
@@ -98,7 +96,7 @@ export const generateBudgetPDF = (budgetData: { totalBudget: number, budgetCateg
       item.notes || '-'
     ]);
     
-    doc.autoTable({
+    autoTable(doc, {
       startY: yPosition,
       head: [['Item', 'Estimated', 'Actual', 'Paid', 'Notes']],
       body: tableData,
@@ -190,7 +188,7 @@ export const generateGuestListPDF = (guests: Guest[], guestGroups: { id: string,
     ['Pending', pending.toString()]
   ];
   
-  doc.autoTable({
+  autoTable(doc, {
     startY: 50,
     head: [['Status', 'Count']],
     body: summaryData,
@@ -213,7 +211,7 @@ export const generateGuestListPDF = (guests: Guest[], guestGroups: { id: string,
     guest.rsvpStatus.charAt(0).toUpperCase() + guest.rsvpStatus.slice(1)
   ]);
   
-  doc.autoTable({
+  autoTable(doc, {
     startY: yPosition,
     head: [['Name', 'Group', 'Phone', 'Email', 'RSVP Status']],
     body: guestData,
@@ -261,7 +259,7 @@ export const generateVendorsPDF = (vendors: Vendor[]) => {
       vendor.notes || '-'
     ]);
     
-    doc.autoTable({
+    autoTable(doc, {
       startY: yPosition,
       head: [['Name', 'Phone', 'Email', 'Cost', 'Notes']],
       body: vendorData,
@@ -297,7 +295,7 @@ export const generateTodosPDF = (todos: TodoItem[]) => {
     todo.dueDate ? formatDate(todo.dueDate) : '-'
   ]);
   
-  doc.autoTable({
+  autoTable(doc, {
     startY: 45,
     head: [['Status', 'Task', 'Priority', 'Due Date']],
     body: todoData,
@@ -404,7 +402,7 @@ export const generateAllPDF = (data: WeddingData) => {
     ['Remaining', formatCurrency(data.totalBudget - totalActual)]
   ];
   
-  doc.autoTable({
+  autoTable(doc, {
     startY: 45,
     head: [['Item', 'Amount']],
     body: summaryData,
@@ -430,7 +428,7 @@ export const generateAllPDF = (data: WeddingData) => {
     event.venue || 'Not set'
   ]);
   
-  doc.autoTable({
+  autoTable(doc, {
     startY: 45,
     head: [['Event', 'Date', 'Time', 'Venue']],
     body: eventData,
@@ -453,7 +451,7 @@ export const generateAllPDF = (data: WeddingData) => {
     ['Pending', pending.toString()]
   ];
   
-  doc.autoTable({
+  autoTable(doc, {
     startY: 45,
     head: [['Status', 'Count']],
     body: guestSummaryData,
@@ -474,7 +472,7 @@ export const generateAllPDF = (data: WeddingData) => {
     ['Pending', pendingTasks.toString()]
   ];
   
-  doc.autoTable({
+  autoTable(doc, {
     startY: 45,
     head: [['Status', 'Count']],
     body: todoSummaryData,

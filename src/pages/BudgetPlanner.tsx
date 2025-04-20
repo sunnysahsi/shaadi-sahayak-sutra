@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { Plus, Edit, Trash2, Check, X, FileText } from 'lucide-react';
@@ -13,6 +14,16 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import PDFExportModal from '@/components/PDFExportModal';
 import ResetDataDialog from '@/components/ResetDataDialog';
+
+// Define the BudgetItem interface needed for TypeScript
+interface BudgetItem {
+  id: string;
+  name: string;
+  estimatedCost: number;
+  actualCost: number;
+  isPaid: boolean;
+  notes: string;
+}
 
 const BudgetPlanner = () => {
   const { weddingData, updateTotalBudget, addBudgetCategory, updateBudgetCategory, 
