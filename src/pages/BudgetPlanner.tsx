@@ -1,17 +1,12 @@
-
 import React, { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { Plus, Edit, Trash2, Check, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Check, X, FileText } from 'lucide-react';
 import { useWedding, BudgetCategory, BudgetItem } from '@/contexts/WeddingContext';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Textarea } from '@/components/ui/textarea';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import PDFExportModal from '@/components/PDFExportModal';
 
 const BudgetPlanner = () => {
   const { weddingData, updateTotalBudget, addBudgetCategory, updateBudgetCategory, 
@@ -31,7 +26,6 @@ const BudgetPlanner = () => {
   const [currentItem, setCurrentItem] = useState<BudgetItem | null>(null);
   const [isEditingItem, setIsEditingItem] = useState(false);
 
-  // Calculate summary
   const totalBudget = weddingData.totalBudget;
   const estimatedTotal = weddingData.budgetCategories.reduce(
     (acc, category) => 
@@ -46,7 +40,6 @@ const BudgetPlanner = () => {
   const remainingBudget = totalBudget - actualTotal;
   const budgetProgress = (actualTotal / totalBudget) * 100;
 
-  // Format currency in Indian format
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -55,7 +48,6 @@ const BudgetPlanner = () => {
     }).format(amount);
   };
 
-  // Save total budget
   const handleSaveTotalBudget = () => {
     const newTotal = parseFloat(newTotalBudget);
     if (!isNaN(newTotal)) {
@@ -64,7 +56,6 @@ const BudgetPlanner = () => {
     setIsEditingTotal(false);
   };
 
-  // Save new category
   const handleAddCategory = () => {
     if (newCategoryName.trim()) {
       addBudgetCategory(newCategoryName.trim());
@@ -73,7 +64,6 @@ const BudgetPlanner = () => {
     }
   };
 
-  // Update category
   const handleUpdateCategory = (id: string) => {
     if (editingCategoryName.trim()) {
       updateBudgetCategory(id, editingCategoryName.trim());
@@ -82,7 +72,6 @@ const BudgetPlanner = () => {
     }
   };
 
-  // Prepare chart data
   const chartData = weddingData.budgetCategories.map((category) => {
     const total = category.items.reduce((sum, item) => sum + (item.actualCost || 0), 0);
     return {
@@ -91,10 +80,8 @@ const BudgetPlanner = () => {
     };
   }).filter(item => item.value > 0);
 
-  // Chart colors
   const COLORS = ['#D32F2F', '#E6A817', '#9C27B0', '#00796B', '#FF5722', '#800020', '#FF69B4'];
 
-  // Open item dialog
   const openItemDialog = (categoryId: string, item: BudgetItem | null = null) => {
     setCurrentCategoryId(categoryId);
     if (item) {
@@ -114,7 +101,6 @@ const BudgetPlanner = () => {
     setIsItemDialogOpen(true);
   };
 
-  // Save item
   const handleSaveItem = () => {
     if (!currentCategoryId || !currentItem || !currentItem.name) return;
     
@@ -133,47 +119,13 @@ const BudgetPlanner = () => {
   return (
     <Layout title="Budget Planner">
       <div className="space-y-6">
-        {/* Budget Summary */}
-        <Card className="wedding-card">
+        <Card className="wedding-card relative">
           <CardHeader className="pb-2">
             <CardTitle className="flex justify-between items-center">
               <span>Budget Summary</span>
-              {isEditingTotal ? (
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="number"
-                    value={newTotalBudget}
-                    onChange={(e) => setNewTotalBudget(e.target.value)}
-                    className="w-40"
-                  />
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={handleSaveTotalBudget}
-                  >
-                    <Check className="h-4 w-4" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => {
-                      setIsEditingTotal(false);
-                      setNewTotalBudget(weddingData.totalBudget.toString());
-                    }}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ) : (
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => setIsEditingTotal(true)}
-                >
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit Total
-                </Button>
-              )}
+              <div className="flex items-center gap-2">
+                <PDFExportModal />
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -202,7 +154,6 @@ const BudgetPlanner = () => {
               <Progress value={budgetProgress} className="h-2" />
             </div>
 
-            {/* Budget Breakdown Chart */}
             {chartData.length > 0 && (
               <div className="mt-6">
                 <h3 className="font-medium mb-4">Expense Breakdown</h3>
@@ -234,7 +185,6 @@ const BudgetPlanner = () => {
           </CardContent>
         </Card>
 
-        {/* Budget Categories */}
         <Card className="wedding-card">
           <CardHeader className="pb-2">
             <CardTitle className="flex justify-between items-center">
@@ -352,7 +302,6 @@ const BudgetPlanner = () => {
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="space-y-4 pb-4">
-                      {/* Items Table */}
                       <div className="rounded-lg overflow-hidden">
                         <table className="w-full border-collapse">
                           <thead className="bg-gray-50">
@@ -440,7 +389,6 @@ const BudgetPlanner = () => {
         </Card>
       </div>
 
-      {/* Item Dialog */}
       <Dialog open={isItemDialogOpen} onOpenChange={setIsItemDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
