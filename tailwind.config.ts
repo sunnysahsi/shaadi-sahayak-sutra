@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,15 +53,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// Wedding theme colors
+				wedding: {
+					red: '#D32F2F',
+					gold: '#E6A817',
+					maroon: '#800020',
+					pink: '#FF69B4',
+					orange: '#FF5722',
+					purple: '#9C27B0',
+					teal: '#00796B'
 				}
 			},
 			borderRadius: {
@@ -84,11 +85,25 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
+				},
+				'sparkle': {
+					'0%': { transform: 'scale(0) rotate(0deg)' },
+					'50%': { transform: 'scale(1) rotate(90deg)' },
+					'100%': { transform: 'scale(0) rotate(180deg)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.5s ease-out',
+				'sparkle': 'sparkle 1.5s ease-in-out infinite'
+			},
+			fontFamily: {
+				'hindi': ['Hind', 'sans-serif'],
 			}
 		}
 	},
